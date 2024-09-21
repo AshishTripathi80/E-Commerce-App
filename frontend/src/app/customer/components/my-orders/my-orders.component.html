@@ -1,0 +1,61 @@
+<ng-container >
+
+    <mat-table #basicTable [dataSource]="myOrders" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="trackingId">
+            <mat-header-cell *matHeaderCellDef style="font-weight: bolder; color: #003973;">
+                Tracking Id</mat-header-cell>
+            <mat-cell *matCellDef="let myOrders">{{myOrders.trackingId}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+            <mat-header-cell *matHeaderCellDef style="font-weight: bolder; color: #003973;">
+                Amount</mat-header-cell>
+            <mat-cell *matCellDef="let myOrders">{{myOrders.amount}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+            <mat-header-cell *matHeaderCellDef style="font-weight: bolder; color: #003973;">
+                Description</mat-header-cell>
+            <mat-cell *matCellDef="let myOrders">{{myOrders.orderDescription}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="address">
+            <mat-header-cell *matHeaderCellDef style="font-weight: bolder; color: #003973;">
+                Address</mat-header-cell>
+            <mat-cell *matCellDef="let myOrders">{{myOrders.address}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef style="font-weight: bolder; color: #003973;">
+                Date</mat-header-cell>
+            <mat-cell *matCellDef="let myOrders">{{myOrders.date |date:'dd/MM/yyyy'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef style="font-weight: bolder; color: #003973;">
+                Status</mat-header-cell>
+            <mat-cell *matCellDef="let myOrders">{{myOrders.orderStatus}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef style="font-weight: bolder; color: #003973;">
+                Action</mat-header-cell>
+            <mat-cell *matCellDef="let myOrders">
+                <span *ngIf="myOrders.orderStatus=='Delivered'">
+                    <button mat-raised-button color="primary" type="submit" routerLink="/customer/ordered-products/{{myOrders.id}}">
+                        Review
+                    </button>
+                </span>
+
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row 
+        *matHeaderRowDef="['trackingId','amount','description','address','date','status','action']"></mat-header-row>
+        <mat-row 
+        *matRowDef="let myOrders; columns: ['trackingId','amount','description','address','date','status','action']"></mat-row>
+
+        
+    </mat-table>
+</ng-container>
