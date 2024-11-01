@@ -9,6 +9,7 @@ import { CouponsComponent } from './components/coupons/coupons.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { PostProductFaqComponent } from './components/post-product-faq/post-product-faq.component';
 import { UpdateProductComponent } from './components/update-product/update-product.component';
+import { AnalyticsComponent } from './components/analytics/analytics.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'orders', component: OrdersComponent },
   { path: 'faq/:productId', component: PostProductFaqComponent },
   { path: 'product/:productId', component: UpdateProductComponent },
+  {path: 'analytics', component: AnalyticsComponent },
 ];
 
 @NgModule({

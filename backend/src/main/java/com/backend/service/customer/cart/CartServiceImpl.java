@@ -230,4 +230,9 @@ public class CartServiceImpl implements CartService {
                 OrderStatus.Shipped, OrderStatus.Delivered)).stream().map(Order::getOrderDto)
                 .collect(Collectors.toList());
     }
+
+    public OrderDto searchOrderByTrackingId(UUID trackingId){
+        Optional<Order> optionalOrder=orderRepository.findByTrackingId(trackingId);
+        return optionalOrder.map(Order::getOrderDto).orElse(null);
+    }
 }

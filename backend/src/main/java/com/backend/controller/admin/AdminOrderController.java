@@ -1,5 +1,6 @@
 package com.backend.controller.admin;
 
+import com.backend.dto.AnalyticsResponse;
 import com.backend.dto.OrderDto;
 import com.backend.service.admin.adminOrder.AdminOrderService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,11 @@ public class AdminOrderController {
         if (orderDto==null)
             return new ResponseEntity<>("Something went wrong", HttpStatus.BAD_REQUEST);
         return ResponseEntity.status(HttpStatus.OK).body(orderDto);
+    }
+
+    @GetMapping("/order/analytics")
+    public ResponseEntity<AnalyticsResponse> getAnalytics(){
+        return ResponseEntity.ok(adminOrderService.calculateAnalytics());
     }
 
 }

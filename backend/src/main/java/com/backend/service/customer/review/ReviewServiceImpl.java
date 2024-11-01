@@ -57,8 +57,8 @@ public class ReviewServiceImpl implements ReviewService{
 
         if (optionalUser.isPresent() && optionalProduct.isPresent()){
             Review review= new Review();
-            review.setRating(review.getRating());
-            review.setDescription(review.getDescription());
+            review.setRating(reviewDto.getRating());
+            review.setDescription(reviewDto.getDescription());
             review.setUser(optionalUser.get());
             review.setProduct(optionalProduct.get());
             review.setImg(reviewDto.getImg().getBytes());

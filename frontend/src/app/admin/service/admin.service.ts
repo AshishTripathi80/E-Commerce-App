@@ -29,10 +29,10 @@ export class AdminService {
     });
   }
 
-  updateProduct(productId: any, productDto: any): Observable<any>{
+  updateProduct(productId: any, productDto: any): Observable<any> {
     return this.http.put(BASIC_URL + `product/${productId}`, productDto, {
       headers: this.createAuthorizationHeader(),
-    })
+    });
   }
 
   getAllProducts(): Observable<any> {
@@ -85,6 +85,12 @@ export class AdminService {
 
   postFAQ(productId: any, FAQDto: any): Observable<any> {
     return this.http.post(BASIC_URL + `faq/${productId}`, FAQDto, {
+      headers: this.createAuthorizationHeader(),
+    });
+  }
+
+  getAnalytics(): Observable<any> {
+    return this.http.get(BASIC_URL + 'order/analytics', {
       headers: this.createAuthorizationHeader(),
     });
   }
