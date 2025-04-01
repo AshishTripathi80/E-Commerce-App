@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import AuthController from '../../src/controller/auth.controller';
 import authService from '../../src/service/auth.service';
-import logger from '../../src/config/logger';
 
 // Mock the authService and logger modules
 jest.mock('../../src/service/auth.service', () => ({
@@ -12,14 +11,9 @@ jest.mock('../../src/service/auth.service', () => ({
   },
 }));
 
-jest.mock('../../src/config/logger', () => ({
-  __esModule: true,
-  default: {
-    info: jest.fn(),
-    warn: jest.fn(),
-    error: jest.fn(),
-  },
-}));
+// Mock console methods
+const mockConsoleLog = jest.spyOn(console, 'log').mockImplementation();
+const mockConsoleError = jest.spyOn(console, 'error').mockImplementation();
 
 const mockRequest = (body: any): Request => ({
   body,
@@ -37,6 +31,13 @@ const mockNext: NextFunction = jest.fn();
 describe('AuthController', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockConsoleLog.mockClear();
+    mockConsoleError.mockClear();
+  });
+
+  afterAll(() => {
+    mockConsoleLog.mockRestore();
+    mockConsoleError.mockRestore();
   });
 
   describe('register', () => {
@@ -49,10 +50,9 @@ describe('AuthController', () => {
       expect(res.json).toHaveBeenCalledWith({
         message: 'Please provide all required fields: name, email, password'
       });
-      expect(logger.warn).toHaveBeenCalledWith(
-        'Registration failed - Missing fields',
+      expect(mockConsoleLog).toHaveBeenCalledWith(
+        'Registration failed - Missing required fields',
         {
-          email: 'test@example.com',
           missingFields: { name: true, email: false, password: false }
         }
       );
@@ -65,7 +65,7 @@ describe('AuthController', () => {
 
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({ message: 'Please provide a valid email address' });
-      expect(logger.warn).toHaveBeenCalledWith(
+      expect(mockConsoleLog).toHaveBeenCalledWith(
         'Registration failed - Invalid email format: invalid-email'
       );
     });
@@ -79,7 +79,7 @@ describe('AuthController', () => {
       expect(res.json).toHaveBeenCalledWith({
         message: 'Password must be at least 6 characters long'
       });
-      expect(logger.warn).toHaveBeenCalledWith(
+      expect(mockConsoleLog).toHaveBeenCalledWith(
         'Registration failed - Password too short for email: test@example.com'
       );
     });
@@ -91,7 +91,7 @@ describe('AuthController', () => {
       await AuthController.register(req, res, mockNext);
 
       expect(authService.register).toHaveBeenCalledWith(req, res);
-      expect(logger.info).toHaveBeenCalledWith(
+      expect(mockConsoleLog).toHaveBeenCalledWith(
         'User registered successfully: test@example.com'
       );
     });
@@ -103,7 +103,7 @@ describe('AuthController', () => {
       (authService.register as jest.Mock).mockRejectedValue(error);
       await AuthController.register(req, res, mockNext);
 
-      expect(logger.error).toHaveBeenCalledWith(
+      expect(mockConsoleError).toHaveBeenCalledWith(
         'Registration error for email: test@example.com',
         { error }
       );
@@ -122,7 +122,7 @@ describe('AuthController', () => {
       expect(res.json).toHaveBeenCalledWith({
         message: 'Please provide both email and password'
       });
-      expect(logger.warn).toHaveBeenCalledWith(
+      expect(mockConsoleLog).toHaveBeenCalledWith(
         'Login failed - Missing credentials',
         {
           email: undefined,
@@ -140,7 +140,7 @@ describe('AuthController', () => {
       expect(res.json).toHaveBeenCalledWith({
         message: 'Please provide both email and password'
       });
-      expect(logger.warn).toHaveBeenCalledWith(
+      expect(mockConsoleLog).toHaveBeenCalledWith(
         'Login failed - Missing credentials',
         {
           email: 'test@example.com',
@@ -156,7 +156,7 @@ describe('AuthController', () => {
 
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({ message: 'Please provide a valid email address' });
-      expect(logger.warn).toHaveBeenCalledWith(
+      expect(mockConsoleLog).toHaveBeenCalledWith(
         'Login failed - Invalid email format: invalid'
       );
     });
@@ -168,7 +168,7 @@ describe('AuthController', () => {
       await AuthController.login(req, res, mockNext);
 
       expect(authService.login).toHaveBeenCalledWith(req, res);
-      expect(logger.info).toHaveBeenCalledWith(
+      expect(mockConsoleLog).toHaveBeenCalledWith(
         'User logged in successfully: test@example.com'
       );
     });
@@ -180,7 +180,7 @@ describe('AuthController', () => {
       (authService.login as jest.Mock).mockRejectedValue(error);
       await AuthController.login(req, res, mockNext);
 
-      expect(logger.error).toHaveBeenCalledWith(
+      expect(mockConsoleError).toHaveBeenCalledWith(
         'Login error for email: test@example.com',
         { error }
       );
