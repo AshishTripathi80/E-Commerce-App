@@ -4,16 +4,15 @@ const config: Config.InitialOptions = {
     preset: 'ts-jest',
     testEnvironment: 'node',
     verbose: true,
-    testMatch: ['**/__tests__/**/*.test.ts'],
-    setupFilesAfterEnv: ['<rootDir>/src/__tests__/setup.ts'],
+    testMatch: ['**/test/**/*.test.ts'],
     moduleNameMapper: {
-        '^@/(.*)$': '<rootDir>/src/$1',
+        '^@/(.*)$': '<rootDir>/test/$1',
     },
     collectCoverage: true,
     collectCoverageFrom: [
         'src/**/*.ts',
         '!src/**/*.d.ts',
-        '!src/__tests__/**',
+        '!test/**',
     ],
 }
 
