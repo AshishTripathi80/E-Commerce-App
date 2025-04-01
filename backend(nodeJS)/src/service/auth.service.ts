@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import User from '../model/user.model';
-import logger from '../config/logger';
 import { generateToken } from '../utils/jwt';
 
 class AuthService {
@@ -37,8 +36,6 @@ class AuthService {
                 res.status(400).json({ message: 'User already exists' });
                 return;
             }
-            
-            logger.error('Error in register service:', error);
             res.status(500).json({ message: 'Error creating user' });
         }
     }
@@ -77,7 +74,6 @@ class AuthService {
 
             res.status(200).json(userData);
         } catch (error) {
-            logger.error('Error in login service:', error);
             res.status(500).json({ message: 'Error during login' });
         }
     }

@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import authService from '../service/auth.service';
-import logger from '../config/logger';
 
 class AuthController {
     register = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -9,8 +8,7 @@ class AuthController {
 
             // Validate required fields
             if (!name || !email || !password) {
-                logger.warn(`Registration failed - Missing fields`, { 
-                    email,
+                console.log(`Registration failed - Missing required fields`, {
                     missingFields: {
                         name: !name,
                         email: !email,
@@ -26,7 +24,7 @@ class AuthController {
             // Validate email format
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
-                logger.warn(`Registration failed - Invalid email format: ${email}`);
+                console.log(`Registration failed - Invalid email format: ${email}`);
                 res.status(400).json({
                     message: 'Please provide a valid email address'
                 });
@@ -35,7 +33,7 @@ class AuthController {
 
             // Validate password strength
             if (password.length < 6) {
-                logger.warn(`Registration failed - Password too short for email: ${email}`);
+                console.log(`Registration failed - Password too short for email: ${email}`);
                 res.status(400).json({
                     message: 'Password must be at least 6 characters long'
                 });
@@ -43,9 +41,9 @@ class AuthController {
             }
 
             await authService.register(req, res);
-            logger.info(`User registered successfully: ${email}`);
+            console.log(`User registered successfully: ${email}`);
         } catch (error) {
-            logger.error(`Registration error for email: ${req.body.email}`, { error });
+            console.error(`Registration error for email: ${req.body.email}`, { error });
             res.status(500).json({ message: 'Internal server error' });
         }
     };
@@ -56,7 +54,7 @@ class AuthController {
 
             // Validate required fields
             if (!email || !password) {
-                logger.warn(`Login failed - Missing credentials`, {
+                console.log(`Login failed - Missing credentials`, {
                     email,
                     missingFields: {
                         email: !email,
@@ -72,7 +70,7 @@ class AuthController {
             // Validate email format
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
-                logger.warn(`Login failed - Invalid email format: ${email}`);
+                console.log(`Login failed - Invalid email format: ${email}`);
                 res.status(400).json({
                     message: 'Please provide a valid email address'
                 });
@@ -80,9 +78,9 @@ class AuthController {
             }
 
             await authService.login(req, res);
-            logger.info(`User logged in successfully: ${email}`);
+            console.log(`User logged in successfully: ${email}`);
         } catch (error) {
-            logger.error(`Login error for email: ${req.body.email}`, { error });
+            console.error(`Login error for email: ${req.body.email}`, { error });
             res.status(500).json({ message: 'Internal server error' });
         }
     };

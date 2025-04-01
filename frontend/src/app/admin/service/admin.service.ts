@@ -12,6 +12,7 @@ export class AdminService {
   constructor(private http: HttpClient) {}
 
   addCategory(categoryDto: any): Observable<any> {
+    console.log(categoryDto);
     return this.http.post(BASIC_URL + 'category', categoryDto, {
       headers: this.createAuthorizationHeader(),
     });

@@ -2,7 +2,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import User from "../../src/model/user.model";
-import logger from "../../src/config/logger";
 import { generateToken } from "../../src/utils/jwt";
 import authService from "../../src/service/auth.service";
 
@@ -10,7 +9,6 @@ import authService from "../../src/service/auth.service";
 jest.mock("bcryptjs");
 jest.mock("../../src/model/user.model");
 jest.mock("../../src/utils/jwt");
-jest.mock("../../src/config/logger");
 
 describe("AuthService", () => {
   beforeEach(() => {

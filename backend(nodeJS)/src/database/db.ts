@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
-import logger from '../config/logger';
 
 const connectDB = async (uri: string = process.env.MONGO_URI || '') => {
     try {
         if (mongoose.connection.readyState === 1) {
-            logger.info('MongoDB already connected');
+            console.log('MongoDB already connected');
             return;
         }
         
@@ -13,9 +12,9 @@ const connectDB = async (uri: string = process.env.MONGO_URI || '') => {
         }
 
         await mongoose.connect(uri);
-        logger.info('MongoDB connected successfully');
+        console.log('MongoDB connected successfully');
     } catch (error) {
-        logger.error('MongoDB connection error:', error);
+        console.error('MongoDB connection error:', error);
         process.exit(1);
     }
 }
@@ -23,9 +22,9 @@ const connectDB = async (uri: string = process.env.MONGO_URI || '') => {
 export const disconnectDB = async () => {
     try {
         await mongoose.disconnect();
-        logger.info('MongoDB disconnected successfully');
+        console.log('MongoDB disconnected successfully');
     } catch (error) {
-        logger.error('MongoDB disconnection error:', error);
+        console.error('MongoDB disconnection error:', error);
     }
 }
 
