@@ -36,14 +36,17 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    const username = this.loginForm.get('email')!.value;
+    const email = this.loginForm.get('email')!.value;
     const password = this.loginForm.get('password')!.value;
+    console.log(email,password);
 
-    this.authService.login(username, password).subscribe(
+    this.authService.login(email, password).subscribe(
       (res) => {
         if (UserStorageService.isAdminLoggedIn()) {
+          console.log('ADMIN LOGGED IN')
           this.router.navigateByUrl('admin/dashboard');
         } else if (UserStorageService.isCustomerLoggedIn()) {
+          console.log('CUSTOMER LOGGED IN')
           this.router.navigateByUrl('customer/dashboard');
         }
       },

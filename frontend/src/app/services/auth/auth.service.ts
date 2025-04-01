@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {map, Observable} from "rxjs";
 import {UserStorageService} from "../storage/user-storage.service";
 
-const BASIC_URL = "http://localhost:8080/";
+const BASIC_URL = "http://localhost:8080/api/auth/";
 
 @Injectable({
   providedIn: 'root'
@@ -14,22 +14,27 @@ export class AuthService {
   }
 
   register(signupRequest: any): Observable<any> {
-    return this.http.post(BASIC_URL + "sign-up", signupRequest);
+    return this.http.post(BASIC_URL + "register", signupRequest);
   }
 
 
-  login(username: string, password: string): any {
+  login(email: string, password: string): any {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const body = {username, password};
+    const body = {email, password};
 
-    return this.http.post(BASIC_URL + 'authenticate', body, {headers, observe: 'response'}).pipe(
+    return this.http.post(BASIC_URL + 'login', body, {headers, observe: 'response'}).pipe(
       map((res) => {
-          const token = res.headers.get('authorization').substring(7);
-          const user = res.body;
-          if (token && user) {
-            this.userStorageService.saveToken(token);
-            this.userStorageService.saveUser(user);
-            return true;
+          const authHeader = res.headers.get('authorization');
+          if (authHeader) {
+            const token = authHeader.substring(7);
+            const user = res.body;
+            if (token && user) {
+              this.userStorageService.saveToken(token);
+              this.userStorageService.saveUser(user);
+              return true;
+            }
+          } else {
+            console.error('Authorization header is missing');
           }
           return false;
         }

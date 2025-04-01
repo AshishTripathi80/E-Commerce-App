@@ -1,4 +1,3 @@
-import bcrypt from 'bcryptjs';
 import jwt, { SignOptions, Secret } from 'jsonwebtoken';
 
 
