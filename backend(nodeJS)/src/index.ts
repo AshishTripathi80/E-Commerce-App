@@ -12,9 +12,11 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || '3000';
 
+
+
 // Middleware
 app.use(cors({
-    origin: process.env.FRONTEND_URL ||'http://localhost:4200',
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || [],
     exposedHeaders: ['Authorization'], // Expose the Authorization header
   }));  // Enable CORS for all routes
 app.use(express.json());
