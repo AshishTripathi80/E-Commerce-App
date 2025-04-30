@@ -7,9 +7,9 @@
                     <td mat-cell *matCellDef="let order">{{order.trackingId}}</td>
                 </ng-container>
 
-                <ng-container matColumnDef="userName">
+                <ng-container matColumnDef="email">
                     <th mat-header-cell *matHeaderCellDef>User Name</th>
-                    <td mat-cell *matCellDef="let order">{{order.userName}}</td>
+                    <td mat-cell *matCellDef="let order">{{order.email}}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="amount">
@@ -55,11 +55,11 @@
                 </ng-container>
 
                 <tr mat-header-row 
-                *matHeaderRowDef="['trackingId','userName','amount','description','address','date','status','action']">
+                *matHeaderRowDef="['trackingId','email','amount','description','address','date','status','action']">
             </tr>
 
              <tr mat-row 
-                *matRowDef="let row; columns: ['trackingId','userName','amount','description','address','date','status','action']">
+                *matRowDef="let row; columns: ['trackingId','email','amount','description','address','date','status','action']">
             </tr>
             </table>
         </mat-card-content>
